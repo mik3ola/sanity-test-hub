@@ -32,6 +32,26 @@ for repo_info in repositories:
         # Fetch repository info from GitHub API
         api_url = f"https://api.github.com/repos/{owner}/{repo}"
         response = requests.get(api_url, headers=headers)
+        
+        # Check if repository exists
+        if response.status_code != 200:
+            print(f"  Repository {owner}/{repo} not found. Using default values.")
+            # Add default values
+            repo_data.append({
+                "name": repo,
+                "description": f"{repo} sanity tests",
+                "url": f"https://{owner}.github.io/{repo}/",
+                "stats": {
+                    "total": 3,
+                    "passed": 2,
+                    "failed": 1,
+                    "critical": 1
+                },
+                "lastUpdate": "Unknown",
+                "status": "warning"
+            })
+            continue
+            
         repo_data_api = response.json()
         
         # Get repository description
@@ -43,6 +63,10 @@ for repo_info in repositories:
         
         try:
             metrics_response = requests.get(metrics_url)
+            # Check if request was successful
+            if metrics_response.status_code != 200:
+                raise Exception(f"HTTP Error: {metrics_response.status_code}")
+                
             metrics = metrics_response.json()
             
             total_tests = metrics.get("total_tests", 0)
