@@ -7,10 +7,10 @@ import os
 # List of repositories to monitor
 repositories = [
     {"owner": "mik3ola", "repo": "sample-sanity-pipeline"},
-    {"owner": "mik3ola", "repo": "api-sanity-tests"},
-    {"owner": "mik3ola", "repo": "frontend-sanity-checks"},
-    {"owner": "mik3ola", "repo": "database-sanity-tests"},
-    {"owner": "mik3ola", "repo": "integration-sanity-suite"}
+    #{"owner": "mik3ola", "repo": "api-sanity-tests"},
+    #{"owner": "mik3ola", "repo": "frontend-sanity-checks"},
+    #{"owner": "mik3ola", "repo": "database-sanity-tests"},
+    #{"owner": "mik3ola", "repo": "integration-sanity-suite"}
     # Add other repositories as needed
 ]
 
