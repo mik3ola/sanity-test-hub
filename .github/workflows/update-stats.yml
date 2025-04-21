@@ -34,9 +34,45 @@ jobs:
         run: |
           git config --global user.name 'GitHub Actions'
           git config --global user.email 'actions@github.com'
+          
+          # Stage changes
           git add config.js
-          git commit -m "Update repository statistics [skip ci]" || echo "No changes to commit"
-          git push
+          
+          # Only commit if there are changes
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            # Pull latest changes with strategy to handle conflicts
+            git pull --rebase origin main || git pull origin main
+            
+            # Commit changes
+            git commit -m "Update repository statistics [skip ci]"
+            
+            # Push with retry logic
+            MAX_RETRIES=3
+            RETRY_COUNT=0
+            
+            while [ $RETRY_COUNT -lt $MAX_RETRIES ]; do
+              if git push; then
+                echo "Successfully pushed changes"
+                break
+              else
+                RETRY_COUNT=$((RETRY_COUNT+1))
+                echo "Push failed, retry $RETRY_COUNT of $MAX_RETRIES"
+                
+                if [ $RETRY_COUNT -lt $MAX_RETRIES ]; then
+                  echo "Pulling latest changes before retrying..."
+                  git pull --rebase origin main || git pull origin main
+                  sleep 5
+                fi
+              fi
+            done
+            
+            if [ $RETRY_COUNT -eq $MAX_RETRIES ]; then
+              echo "Failed to push after $MAX_RETRIES attempts"
+              exit 1
+            fi
+          fi
 
   # This job runs after update-stats completes successfully
   deploy-pages:
