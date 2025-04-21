@@ -37,3 +37,33 @@ jobs:
           git add config.js
           git commit -m "Update repository statistics [skip ci]" || echo "No changes to commit"
           git push
+
+  # This job runs after update-stats completes successfully
+  deploy-pages:
+    needs: update-stats
+    runs-on: ubuntu-latest
+    # Grant GITHUB_TOKEN the permissions required for this job
+    permissions:
+      pages: write
+      id-token: write
+    # Deploy to the github-pages environment
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: main  # Ensure we have the latest changes
+      
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+      
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: '.'
+      
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
