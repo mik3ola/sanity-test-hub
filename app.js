@@ -29,10 +29,23 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
+// Add from=hub parameter to URLs
+function addHubParameter(url) {
+    // Check if URL already has parameters
+    if (url.includes('?')) {
+        return `${url}&from=hub`;
+    } else {
+        return `${url}?from=hub`;
+    }
+}
+
 // Create a repository card for grid view
 function createGridCard(repo) {
     const card = document.createElement('div');
     card.className = 'repository-card';
+    
+    // Add from=hub parameter to URL
+    const reportUrl = addHubParameter(repo.url);
     
     card.innerHTML = `
         <div class="repository-header">
@@ -58,7 +71,7 @@ function createGridCard(repo) {
                 <span class="status-indicator status-${repo.status}"></span>
                 Updated ${repo.lastUpdate}
             </div>
-            <a href="${repo.url}" class="view-report">View Report</a>
+            <a href="${reportUrl}" class="view-report">View Report</a>
         </div>
     `;
     
@@ -69,6 +82,9 @@ function createGridCard(repo) {
 function createListItem(repo) {
     const item = document.createElement('div');
     item.className = 'repository-list-item';
+    
+    // Add from=hub parameter to URL
+    const reportUrl = addHubParameter(repo.url);
     
     item.innerHTML = `
         <div class="repository-info">
@@ -99,7 +115,7 @@ function createListItem(repo) {
                 <span class="status-indicator status-${repo.status}"></span>
                 ${repo.lastUpdate}
             </div>
-            <a href="${repo.url}" class="view-report">View Report</a>
+            <a href="${reportUrl}" class="view-report">View Report</a>
         </div>
     `;
     
