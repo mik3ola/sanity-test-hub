@@ -570,6 +570,118 @@
                     }
                 });
             });
+            
+            // Add back button to report pages when loaded via "View Report"
+            // This function creates and injects a back button script to target repositories
+            function addBackButtonToReports() {
+                // For each repository in our config
+                if (typeof REPOSITORIES !== 'undefined') {
+                    REPOSITORIES.forEach(repo => {
+                        // Create a link to the report
+                        const reportUrl = repo.url;
+                        const viewReportLinks = document.querySelectorAll('.view-report');
+                        
+                        // For each View Report link
+                        viewReportLinks.forEach(link => {
+                            // If it's a link to this repo
+                            if (link.href === reportUrl) {
+                                // Set a URL parameter to indicate the need for a back button
+                                link.href = reportUrl + '?from=hub';
+                            }
+                        });
+                    });
+                }
+                
+                // Check if we are on a report page and need to add a back button
+                const urlParams = new URLSearchParams(window.location.search);
+                if (urlParams.get('from') === 'hub') {
+                    // We're on a report page that was accessed from the hub
+                    // Create and add a back button
+                    const backButton = document.createElement('div');
+                    backButton.className = 'back-button';
+                    backButton.innerHTML = '<a href="javascript:history.back()"><i class="fas fa-arrow-left"></i> Back to Dashboard</a>';
+                    
+                    // Style the back button
+                    backButton.style.position = 'fixed';
+                    backButton.style.top = '20px';
+                    backButton.style.left = '20px';
+                    backButton.style.padding = '10px 15px';
+                    backButton.style.backgroundColor = 'rgba(52, 152, 219, 0.9)';
+                    backButton.style.color = 'white';
+                    backButton.style.borderRadius = '8px';
+                    backButton.style.boxShadow = '0 2px 5px rgba(0,0,0,0.2)';
+                    backButton.style.zIndex = '1000';
+                    backButton.style.cursor = 'pointer';
+                    
+                    // Add hover effect
+                    backButton.addEventListener('mouseover', function() {
+                        this.style.backgroundColor = 'rgba(41, 128, 185, 1)';
+                    });
+                    
+                    backButton.addEventListener('mouseout', function() {
+                        this.style.backgroundColor = 'rgba(52, 152, 219, 0.9)';
+                    });
+                    
+                    // Insert at the beginning of the body
+                    document.body.insertBefore(backButton, document.body.firstChild);
+                }
+            }
+            
+            // Execute the function to add back buttons
+            addBackButtonToReports();
+            
+            // Also inject a script that will add back buttons to target pages
+            // This script will be executed on the report pages
+            function injectBackButtonScript() {
+                const scriptContent = `
+                (function() {
+                    // Check if we're on a page that should have a back button
+                    const urlParams = new URLSearchParams(window.location.search);
+                    if (urlParams.get('from') === 'hub') {
+                        // Create and add a back button
+                        const backButton = document.createElement('div');
+                        backButton.className = 'back-button';
+                        backButton.innerHTML = '<a href="javascript:history.back()"><i class="fas fa-arrow-left"></i> Back to Dashboard</a>';
+                        
+                        // Style the back button
+                        backButton.style.position = 'fixed';
+                        backButton.style.top = '20px';
+                        backButton.style.left = '20px';
+                        backButton.style.padding = '10px 15px';
+                        backButton.style.backgroundColor = 'rgba(52, 152, 219, 0.9)';
+                        backButton.style.color = 'white';
+                        backButton.style.borderRadius = '8px';
+                        backButton.style.boxShadow = '0 2px 5px rgba(0,0,0,0.2)';
+                        backButton.style.zIndex = '1000';
+                        backButton.style.cursor = 'pointer';
+                        
+                        // Add hover effect
+                        backButton.addEventListener('mouseover', function() {
+                            this.style.backgroundColor = 'rgba(41, 128, 185, 1)';
+                        });
+                        
+                        backButton.addEventListener('mouseout', function() {
+                            this.style.backgroundColor = 'rgba(52, 152, 219, 0.9)';
+                        });
+                        
+                        // Insert at the beginning of the body
+                        document.body.insertBefore(backButton, document.body.firstChild);
+                    }
+                })();
+                `;
+                
+                // Create a hidden script element with this code
+                const script = document.createElement('script');
+                script.id = 'back-button-injector';
+                script.type = 'text/javascript';
+                script.textContent = scriptContent;
+                
+                // Add it to the document head
+                document.head.appendChild(script);
+            }
+            
+            // Execute the script injection
+            injectBackButtonScript();
         });
     </script>
 </body>
