@@ -8,7 +8,7 @@ on:
     branches:
       - main  # Run on pushes to main branch
     paths-ignore:
-      - 'config.js'  # Ignore pushes that only change config.js to avoid infinite loops
+      - 'dynamic-implementation-guide'  # Ignore pushes that only change config.js to avoid infinite loops
 
 jobs:
   update-stats:
@@ -98,7 +98,7 @@ jobs:
       
       - name: Deploy directly to gh-pages branch
         run: |
-          # Display the content we're about to deploy
+          # Display the content about to be deployed
           echo "Files to be deployed:"
           ls -la
           
