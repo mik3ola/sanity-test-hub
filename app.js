@@ -5,12 +5,16 @@ document.addEventListener('DOMContentLoaded', function() {
     document.querySelector('.stat-card:nth-child(2) .stat-value').textContent = OVERALL_STATS.passRate + '%';
     document.querySelector('.stat-card:nth-child(3) .stat-value').textContent = OVERALL_STATS.critical;
     
-    // Get current date and time for the last update
-    const now = new Date();
-    const hours = now.getHours().toString().padStart(2, '0');
-    const minutes = now.getMinutes().toString().padStart(2, '0');
-    document.querySelector('.stat-card:nth-child(4) .stat-value').textContent = `Today, ${hours}:${minutes}`;
-    
+    // Set the last update time from pipeline execution data
+    // Assuming OVERALL_STATS.lastUpdated contains the pipeline timestamp
+    const lastUpdate = OVERALL_STATS.lastUpdated || new Date();
+    const day = lastUpdate.getDate ? lastUpdate.getDate() : new Date(lastUpdate).getDate();
+    const month = lastUpdate.toLocaleString ? lastUpdate.toLocaleString('default', { month: 'short' }) : new Date(lastUpdate).toLocaleString('default', { month: 'short' });
+    const year = lastUpdate.getFullYear ? lastUpdate.getFullYear() : new Date(lastUpdate).getFullYear();
+    const hours = (lastUpdate.getHours ? lastUpdate.getHours() : new Date(lastUpdate).getHours()).toString().padStart(2, '0');
+    const minutes = (lastUpdate.getMinutes ? lastUpdate.getMinutes() : new Date(lastUpdate).getMinutes()).toString().padStart(2, '0');
+    document.querySelector('.stat-card:nth-child(4) .stat-value').textContent = `${day} ${month} ${year}\n@ ${hours}:${minutes}`;
+
     // Clear existing repositories
     const gridView = document.getElementById('gridView');
     const listView = document.getElementById('listView');
