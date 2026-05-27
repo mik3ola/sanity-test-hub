@@ -1,5 +1,5 @@
 // Configuration for the Sanity Test Reports Hub
-// Automatically updated by GitHub Actions on 2026-05-26 03:50:06
+// Automatically updated by GitHub Actions on 2026-05-27 04:03:29
 
 const REPOSITORIES = [
     {
@@ -12,7 +12,7 @@ const REPOSITORIES = [
             "failed": 1,
             "critical": 1
         },
-        "lastUpdate": "57 weeks ago",
+        "lastUpdate": "9 hours ago",
         "status": "success"
     }
 ];
