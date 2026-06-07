@@ -1,5 +1,5 @@
 // Configuration for the Sanity Test Reports Hub
-// Automatically updated by GitHub Actions on 2026-06-06 03:42:45
+// Automatically updated by GitHub Actions on 2026-06-07 04:10:55
 
 const REPOSITORIES = [
     {
