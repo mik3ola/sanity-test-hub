@@ -1,10 +1,10 @@
 // Configuration for the Sanity Test Reports Hub
-// Automatically updated by GitHub Actions on 2026-08-02 02:56:54
+// Automatically updated by GitHub Actions on 2026-08-03 03:14:21
 
 const REPOSITORIES = [
     {
         "name": "sample-sanity-pipeline",
-        "description": "sample-sanity-pipeline sanity tests",
+        "description": null,
         "url": "https://mik3ola.github.io/sample-sanity-pipeline/",
         "stats": {
             "total": 3,
@@ -12,7 +12,7 @@ const REPOSITORIES = [
             "failed": 1,
             "critical": 1
         },
-        "lastUpdate": "Unknown",
+        "lastUpdate": "2 hours ago",
         "status": "warning"
     }
 ];
